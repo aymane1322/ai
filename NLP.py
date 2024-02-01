@@ -1,37 +1,32 @@
-import nltk
-import re as r
+import nltk 
 from nltk.stem import PorterStemmer
-
-Text = ["hello, python is a great language",
-        "python is not a good programming language",
-        " C++ has been used for years",
-        " I loved that movie [12]"]
-stemmed_sentence= []
-for sentence in Text:
-    
-    sentence= r.sub('\[[^]]*\]','',sentence)
-    sentence= r.sub(r'[^a-zA-Z0-9\s]','',sentence)
-    Stemming= PorterStemmer()
-    stemmed=Stemming.stem(sentence)
-    stemmed_sentence.append(stemmed)
-
-
-print (stemmed_sentence)
-
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-stop_words = set(stopwords.words("english"))
+import re as r
+nltk.download('stopwords')
+nltk.download('punkt')
+
+englishStopWords = set(stopwords.words("english"))
+
+Text = ["hello, python is a great language", "python is not a good programming language"," C++ has been used for years", " I loved that movie [12]" ]
+
+steamedText = PorterStemmer()
 
 
 
-fullsentence=""
-for sentence in stemmed_sentence:
-    words=word_tokenize(sentence)
-    for word in words:
-        if word not in stop_words:
-            fullsentence=fullsentence+" " +  word   # add a space before each word to handle the case where the first character of
-            
-print (fullsentence)
+def talkToPc(phrase):
+  steamedTextTable  = []
+  for text in phrase:
+    text= r.sub('\[[^]]*\]','',text)
+    text= r.sub(r'[^a-zA-Z0-9\s]','',text)
+    text= steamedText.stem(text)
+    text= word_tokenize(text)
+    for word in text:
+      if(word not in englishStopWords):
+        steamedTextTable.append(word)
+  return " ".join(steamedTextTable)
+  
+print(talkToPc(Text))
 
 #SENTIMENT ANALYSER-------------------------------------------------------------------------------------------------------------
 from nltk.sentiment import SentimentIntensityAnalyzer
